@@ -8,11 +8,7 @@ let package = Package(
     products: [
         .library(
             name: "SimpleHTTP",
-            targets: [
-                "SimpleHTTPCore",
-                "SimpleHTTPSauce",
-                "SimpleHTTPSugar"
-            ]
+            targets: ["SimpleHTTP"]
         ),
         .library(
             name: "SimpleHTTPCore",
@@ -29,26 +25,31 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "SimpleHTTPCore",
-            path: "Sources/Core"
-        ),
-        .target(
-            name: "SimpleHTTPSauce",
-            dependencies: ["SimpleHTTPCore"],
-            path: "Sources/Sauce"
-        ),
-        .target(
-            name: "SimpleHTTPSugar",
-            dependencies: ["SimpleHTTPCore"],
-            path: "Sources/Sugar"
-        ),
-        .testTarget(
-            name: "SimpleHTTPTests",
+            name: "SimpleHTTP",
             dependencies: [
                 "SimpleHTTPCore",
                 "SimpleHTTPSauce",
                 "SimpleHTTPSugar",
-            ]
+            ],
+            path: "Sources/SimpleHTTP"
+        ),
+        .target(
+            name: "SimpleHTTPCore",
+            path: "Sources/Modules/Core"
+        ),
+        .target(
+            name: "SimpleHTTPSauce",
+            dependencies: ["SimpleHTTPCore"],
+            path: "Sources/Modules/Sauce"
+        ),
+        .target(
+            name: "SimpleHTTPSugar",
+            dependencies: ["SimpleHTTPCore"],
+            path: "Sources/Modules/Sugar"
+        ),
+        .testTarget(
+            name: "SimpleHTTPTests",
+            dependencies: ["SimpleHTTP"]
         ),
     ]
 )

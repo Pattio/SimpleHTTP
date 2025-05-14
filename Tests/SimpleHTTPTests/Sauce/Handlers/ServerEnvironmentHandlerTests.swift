@@ -6,8 +6,7 @@
 //
 
 import Testing
-import SimpleHTTPCore
-import SimpleHTTPSauce
+import SimpleHTTP
 
 @Suite("ServerEnvironmentHandler")
 struct ServerEnvironmentHandlerTests {

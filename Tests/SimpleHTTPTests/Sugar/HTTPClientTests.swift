@@ -6,8 +6,7 @@
 //
 
 import Testing
-import SimpleHTTPCore
-import SimpleHTTPSugar
+import SimpleHTTP
 
 @Suite("HTTPClientTests")
 struct HandlerChainTests {

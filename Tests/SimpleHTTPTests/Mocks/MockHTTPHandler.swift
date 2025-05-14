@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import SimpleHTTPCore
+import SimpleHTTP
 
 struct MockHTTPHandler: HTTPHandler {
     var next: AnyHandler? = nil

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import SimpleHTTPCore
+import SimpleHTTP
 
 extension HTTPResponse {
     /// Creates a mock `HTTPResponse` with the given parameters.

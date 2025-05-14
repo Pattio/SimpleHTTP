@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import SimpleHTTPCore
 import Testing
+import SimpleHTTP
 
 @Suite("HTTPBody")
 struct HTTPBodyTests {

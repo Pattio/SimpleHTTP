@@ -6,7 +6,7 @@
 //
 
 import Testing
-import SimpleHTTPCore
+import SimpleHTTP
 
 @Suite("HTTPRequest")
 struct HTTPRequestTests {

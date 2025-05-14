@@ -5,9 +5,8 @@
 //  Created by Edvinas Byla on 14/05/2025.
 //
 
-import SimpleHTTPCore
-import SimpleHTTPSauce
 import Testing
+import SimpleHTTP
 
 @Suite("HTTPStatusValidatingHandler")
 struct StatusValidatorTests {
