@@ -34,6 +34,7 @@ struct HTTPBodyTests {
         )
         
         let encoder = JSONEncoder()
+        let decoder = JSONDecoder()
         let body = JSONBody(
             value: user,
             encoder: encoder
@@ -43,8 +44,9 @@ struct HTTPBodyTests {
         #expect(body.additionalHeaders["Content-Type"] == "application/json")
         
         let bodyData = try body.encode(for: .mock)
-        let encoderData = try encoder.encode(user)
-        #expect(bodyData == encoderData)
+        let decodedUser = try decoder.decode(User.self, from: bodyData)
+        
+        #expect(decodedUser == user)
     }
     
     @Test("FormBody percent-encodes correctly")
