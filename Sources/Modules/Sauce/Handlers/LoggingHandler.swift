@@ -30,7 +30,7 @@ public struct LoggingHandler: HTTPHandler {
             subsystem: "SimpleHTTP",
             category: String(describing: Self.self)
         ),
-        nextHandler: AnyHandler? = nil,
+        nextHandler: AnyHandler? = nil
     ) {
         self.logger = logger
         self.next = nextHandler

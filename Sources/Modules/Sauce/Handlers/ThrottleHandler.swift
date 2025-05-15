@@ -21,7 +21,7 @@ public struct ThrottleHandler: HTTPHandler {
     ///   - nextHandler: The next handler to invoke.
     public init(
         maxRequests: Int,
-        nextHandler: AnyHandler? = nil,
+        nextHandler: AnyHandler? = nil
     ) {
         assert(maxRequests > 0)
         self.tokenBucket = TokenBucket(tokens: maxRequests)
