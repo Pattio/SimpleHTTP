@@ -68,4 +68,36 @@ public struct HTTPClient: Sendable {
     public func send(request: HTTPHandler.Request) async throws(HTTPError) -> HTTPHandler.Response {
         try await handler.handle(request: request)
     }
+    
+    /// Sends a request through the handler chain.
+    ///
+    /// - Parameters:
+    ///   - method: The HTTP method.
+    ///   - scheme: URL scheme (e.g. "https").
+    ///   - host: The host (e.g. "api.example.com").
+    ///   - path: The URL path (e.g. "/v1/resource").
+    ///   - headers: Initial headers.
+    ///   - body: The request body.
+    /// - Throws: An `HTTPError` if any handler fails.
+    /// - Returns: The resulting `HTTPResponse`.
+    @discardableResult
+    public func send(
+        method: HTTPRequest.Method,
+        scheme: String = "https",
+        host: String? = nil,
+        path: String,
+        headers: [String: String] = [:],
+        body: HTTPBody = EmptyBody()
+    ) async throws(HTTPError) -> HTTPHandler.Response {
+        try await handler.handle(
+            request: .init(
+                method: method,
+                scheme: scheme,
+                host: host,
+                path: path,
+                headers: headers,
+                body: body
+            )
+        )
+    }
 }
