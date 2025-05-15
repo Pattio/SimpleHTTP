@@ -54,7 +54,7 @@ extension HTTPHandler where Self == ServerEnvironmentHandler {
     /// Factory for `ServerEnvironmentHandler`
     ///
     /// - Parameter serverEnvironment: The default environment to apply.
-    public static func severEnvironment(_ serverEnvironment: ServerEnvironment) -> Self {
+    public static func environment(_ serverEnvironment: ServerEnvironment) -> Self {
         ServerEnvironmentHandler(environment: serverEnvironment)
     }
 }
