@@ -5,9 +5,9 @@
 The goal of `SimpleHTTP` is to provide basic building blocks, a default implementation, and just enough syntactic sugar to make it actually fun to use.
 
 The library consists of three modules:
-1. [`SimpleHTTPCore`](#core) - The bare minimum core for building a custom underlying implementation.
-2. [`SimpleHTTPSauce`](#sauce) - The basic implementation that provides default behavior.
-3. [`SimpleHTTPSugar`](#sugar) - The syntactic sugar to simplify interaction with any implementation.
+1. [`SimpleHTTPCore`](#core-) - The bare minimum core for building a custom underlying implementation.
+2. [`SimpleHTTPSauce`](#sauce-) - The basic implementation that provides default behavior.
+3. [`SimpleHTTPSugar`](#sugar-) - The syntactic sugar to simplify interaction with any implementation.
 
 ## Usage
 
@@ -32,9 +32,9 @@ let result = try await client.send(
 The core module provides only the primitives and basics. Import `SimpleHTTPCore` to build a fully custom stack with full control over request construction and execution. 
 
 The three core building blocks are:
-1. `HTTPRequest` - Defines how an HTTP request is constructed.
-2. `HTTPResponse` - Defines how an HTTP response is represented.
-3. `HTTPHandler` - Defines how requests and responses are processed in a chain.
+1. [`HTTPRequest`](Sources/Modules/Core/HTTPRequest.swift) - Defines how an HTTP request is constructed.
+2. [`HTTPResponse`](Sources/Modules/Core/HTTPResponse.swift) - Defines how an HTTP response is represented.
+3. [`HTTPHandler`](Sources/Modules/Core/HTTPHandler.swift) - Defines how requests and responses are processed in a chain.
 
 The main abstraction is `HTTPHandler`, which enables modular and composable extensions to the request pipeline. A handler can intercept and modify outgoing requests, and inspect, transform, or validate incoming responses before passing them along the chain.
 
