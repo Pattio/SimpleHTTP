@@ -78,10 +78,6 @@ fileprivate actor TokenBucket {
     }
 
     private func returnToken() {
-        guard waiters.count > 0 else {
-            return
-        }
-
         if waiters.count > 0 {
             waiters
                 .removeFirst()
