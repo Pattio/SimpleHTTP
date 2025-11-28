@@ -30,6 +30,7 @@ public struct HTTPRequest: Sendable {
     ///   - method: The HTTP method.
     ///   - scheme: URL scheme (e.g. "https").
     ///   - host: The host (e.g. "api.example.com").
+    ///   - port: The port of the server, if any (e.g. `8080`).
     ///   - path: The URL path (e.g. "/v1/resource").
     ///   - headers: Initial headers.
     ///   - body: The request body.
@@ -37,6 +38,7 @@ public struct HTTPRequest: Sendable {
         method: Method,
         scheme: String = "https",
         host: String? = nil,
+        port: Int? = nil,
         path: String,
         headers: [String: String] = [:],
         body: HTTPBody = EmptyBody()
@@ -47,6 +49,7 @@ public struct HTTPRequest: Sendable {
         
         urlComponents.scheme = scheme
         urlComponents.host = host
+        urlComponents.port = port
         urlComponents.path = path
     }
     
@@ -91,6 +94,18 @@ extension HTTPRequest {
     public var host: String? {
         get { urlComponents.host }
         set { urlComponents.host = newValue }
+    }
+    
+    /// The URL scheme for this request.
+    public var scheme: String? {
+        get { urlComponents.scheme }
+        set { urlComponents.scheme = newValue }
+    }
+    
+    /// The port component of the URL.
+    public var port: Int? {
+        get { urlComponents.port }
+        set { urlComponents.port = newValue }
     }
     
     /// The path component of the URL.
