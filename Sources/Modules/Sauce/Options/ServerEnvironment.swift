@@ -18,22 +18,35 @@ public struct ServerEnvironment: Sendable {
     
     /// Default headers to include on every request.
     public var headers: [String: String]
+    
+    /// Optional URL scheme to override on requests.
+    public var scheme: String?
+    
+    /// Optional port to use for the server.
+    public var port: Int?
+    
 
     /// Initializes a new environment.
     ///
     /// - Parameters:
     ///   - host: The server host.
     ///   - pathPrefix: A path segment to prepend.
+    ///   - scheme: The URL scheme to override, if any.
+    ///   - port: The port to use for the server, if any.
     ///   - headers: Default headers.
     public init(
         host: String,
         pathPrefix: String = "/",
+        scheme: String? = nil,
+        port: Int? = nil,
         headers: [String: String] = [:]
     ) {
         let prefix = pathPrefix.hasPrefix("/") ? "" : "/"
 
         self.host = host
         self.pathPrefix = prefix + pathPrefix
+        self.scheme = scheme
+        self.port = port
         self.headers = headers
     }
 }

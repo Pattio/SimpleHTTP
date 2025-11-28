@@ -42,4 +42,41 @@ struct ServerEnvironmentHandlerTests {
         let url = try #require(sentRequest.url)
         #expect(url.absoluteString == "https://api.example.com/v1/users")
     }
+    
+    @Test("Injects localhost environment")
+    func testLocalhostEnvironmentInjection() async throws {
+        let environment = ServerEnvironment(
+            host: "localhost",
+            pathPrefix: "/v1",
+            scheme: "http",
+            port: 8080,
+            headers: ["Accept": "application/json"]
+        )
+        
+        let responseHandler = MockHTTPHandler { request in
+            .mock(request: request)
+        }
+
+        let environmentHandler = ServerEnvironmentHandler(
+            environment: environment,
+            nextHandler: responseHandler
+        )
+
+        let request = HTTPRequest(
+            method: .get,
+            path: "users"
+        )
+        
+        let result = try await environmentHandler.handle(request: request)
+        let sentRequest = result.request
+
+        #expect(sentRequest.host == environment.host)
+        #expect(sentRequest.path == "/v1/users")
+        #expect(sentRequest.headers["Accept"] == "application/json")
+        #expect(sentRequest.port == environment.port)
+        #expect(sentRequest.scheme == environment.scheme)
+        
+        let url = try #require(sentRequest.url)
+        #expect(url.absoluteString == "http://localhost:8080/v1/users")
+    }
 }

@@ -37,6 +37,14 @@ public struct ServerEnvironmentHandler: HTTPHandler {
             requestCopy.host = environment.host
         }
         
+        if requestCopy.port == nil {
+            requestCopy.port = environment.port
+        }
+        
+        if let customScheme = environment.scheme {
+            requestCopy.scheme = customScheme
+        }
+        
         if requestCopy.path.hasPrefix("/") == false {
             let pathSeparator = environment.pathPrefix.hasSuffix("/") ? "" : "/"
             requestCopy.path = environment.pathPrefix + pathSeparator + requestCopy.path
