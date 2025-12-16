@@ -5,6 +5,7 @@
 //  Created by Edvinas Byla on 14/05/2025.
 //
 
+import Foundation
 import Testing
 import SimpleHTTP
 
@@ -46,6 +47,53 @@ struct HTTPRequestTests {
 
         request[option: ToggleOption.self] = true
         #expect(request[option: ToggleOption.self] == true)
+    }
+    
+    @Test("Single query item composes into URL")
+    func testSingleQueryItemURL() throws {
+        var request = HTTPRequest(
+            method: .get,
+            scheme: "https",
+            host: "example.com",
+            path: "/foo"
+        )
+
+        request.queryItems = [
+            URLQueryItem(name: "since", value: "15")
+        ]
+
+        let url = try #require(request.url)
+        #expect(url.absoluteString == "https://example.com/foo?since=15")
+    }
+    
+    @Test("Query items reflect in composed URL")
+    func testQueryItemsComposition() throws {
+        var request = HTTPRequest(
+            method: .get,
+            scheme: "https",
+            host: "example.com",
+            path: "/foo"
+        )
+
+        request.queryItems = [
+            URLQueryItem(name: "since", value: "15"),
+            URLQueryItem(name: "limit", value: "100")
+        ]
+
+        let url = try #require(request.url)
+        #expect(url.scheme == "https")
+        #expect(url.host == "example.com")
+        #expect(url.path == "/foo")
+
+        let components = try #require(
+            URLComponents(
+                url: url,
+                resolvingAgainstBaseURL: false
+            )
+        )
+        let items = components.queryItems ?? []
+        #expect(items.contains(URLQueryItem(name: "since", value: "15")))
+        #expect(items.contains(URLQueryItem(name: "limit", value: "100")))
     }
 }
 

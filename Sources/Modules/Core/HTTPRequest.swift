@@ -113,6 +113,12 @@ extension HTTPRequest {
         get { urlComponents.path }
         set { urlComponents.path = newValue }
     }
+    
+    /// The query items component of the URL.
+    public var queryItems: [URLQueryItem] {
+        get { urlComponents.queryItems ?? [] }
+        set { urlComponents.queryItems = newValue }
+    }
 }
 
 fileprivate struct AnyHTTPRequestOption: @unchecked Sendable {
