@@ -42,4 +42,46 @@ struct StatusValidatorTests {
         
         #expect(status == HTTPStatus(rawValue: failingStatusCode))
     }
+    
+    @Test("Maps underlying error for invalid status codes")
+    func testMapsUnderlyingErrorOnInvalidStatus() async {
+        let failingStatusCode = 500
+        let failingHandler = MockHTTPHandler(
+            response: .mock(status: failingStatusCode)
+        )
+
+        let validator = HTTPStatusValidatingHandler(
+            mapError: { _ in MappedError() },
+            nextHandler: failingHandler
+        )
+
+        let error = await #expect(throws: HTTPError.self) {
+            _ = try await validator.handle(request: .mock)
+        }
+
+        guard let underlyingError = error?.underlyingError else {
+            Issue.record("Expected underlyingError to be set.")
+            return
+        }
+
+        #expect((underlyingError as? MappedError) == MappedError())
+    }
+    
+    @Test("Does not map underlying error for acceptable status codes")
+    func testDoesNotMapUnderlyingErrorOnValidStatus() async throws {
+        let okHandler = MockHTTPHandler(response: .mock(status: 204))
+
+        let validator = HTTPStatusValidatingHandler(
+            validStatusRange: 200..<300,
+            mapError: { _ in
+                Issue.record("mapError must not be invoked for acceptable status codes.")
+                return MappedError()
+            },
+            nextHandler: okHandler
+        )
+
+        _ = try await validator.handle(request: .mock)
+    }
 }
+
+fileprivate struct MappedError: Error, Equatable {}
