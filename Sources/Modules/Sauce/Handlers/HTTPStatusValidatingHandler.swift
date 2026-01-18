@@ -9,6 +9,8 @@ import SimpleHTTPCore
 
 /// Validates that the HTTP response status code falls within a given range.
 public struct HTTPStatusValidatingHandler: HTTPHandler {
+    public typealias ErrorMapper = @Sendable (Response) -> Error?
+    
     /// The next handler in the chain.
     public var next: AnyHandler?
     
@@ -16,17 +18,21 @@ public struct HTTPStatusValidatingHandler: HTTPHandler {
     public static let defaultValidRange = 200..<300
     
     private let validStatusRange: Range<Int>
+    private let mapError: ErrorMapper?
 
     /// Creates a status-validator handler.
     ///
     /// - Parameters:
     ///   - validStatusRange: The acceptable HTTP status codes.
+    ///   - mapError: Optional mapper that produces an underlying error when the status code is invalid.
     ///   - nextHandler: The next handler to invoke.
     public init(
         validStatusRange: Range<Int> = Self.defaultValidRange,
+        mapError: ErrorMapper? = nil,
         nextHandler: AnyHandler? = nil
     ) {
         self.validStatusRange = validStatusRange
+        self.mapError = mapError
         self.next = nextHandler
     }
     
@@ -38,7 +44,8 @@ public struct HTTPStatusValidatingHandler: HTTPHandler {
             throw .init(
                 code: .invalidStatus(result.status),
                 request: result.request,
-                response: result
+                response: result,
+                underlyingError: mapError?(result)
             )
         }
         
@@ -54,8 +61,16 @@ extension HTTPHandler where Self == HTTPStatusValidatingHandler {
     
     /// Factory for a status-validating handler.
     ///
-    /// - Parameter range: The acceptable status codes.
-    public static func httpStatusValidator(in range: Range<Int> = Self.defaultValidRange) -> Self {
-        HTTPStatusValidatingHandler(validStatusRange: range)
+    /// - Parameters:
+    ///   - range: The acceptable status codes.
+    ///   - mapError: Optional mapper that produces an underlying error when the status code is invalid.
+    public static func httpStatusValidator(
+        in range: Range<Int> = Self.defaultValidRange,
+        mapError: Self.ErrorMapper? = nil
+    ) -> Self {
+        HTTPStatusValidatingHandler(
+            validStatusRange: range,
+            mapError: mapError
+        )
     }
 }
