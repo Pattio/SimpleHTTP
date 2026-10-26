@@ -58,6 +58,7 @@ public struct HTTPRequest: Sendable {
         public static let get = Self(rawValue: "GET")
         public static let post = Self(rawValue: "POST")
         public static let put = Self(rawValue: "PUT")
+        public static let patch = Self(rawValue: "PATCH")
         public static let delete = Self(rawValue: "DELETE")
         
         /// The raw string value (e.g. `"GET"`).
